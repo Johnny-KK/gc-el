@@ -1,0 +1,43 @@
+import { Input } from 'element-gc';
+import { extractProperty } from '../utils/tools';
+
+/**
+ * gc-textarea 接受的全部prop选项
+ */
+const GC_TEXTAREA_PROPS = {
+  value: { type: [String, Number], default: '', required: true },
+  readonly: { type: Boolean, default: false },
+  disabled: { type: Boolean, default: false },
+  placeholder: { type: String, default: '' },
+  rows: { type: Number, default: 2 }
+};
+
+/**
+ * element-gc 能配置的prop选项
+ */
+const propKeys = Object.keys(Input.props);
+
+/**
+ * 以attr方式绑定到DOM上的选项
+ */
+const attrKeys = ['placeholder'];
+
+/**
+ * TODO $listeners 过滤
+ */
+
+export default {
+  name: 'gc-textarea',
+  props: { ...GC_TEXTAREA_PROPS },
+  computed: {
+    elProps() {
+      return extractProperty(this.$props, propKeys);
+    },
+    attrs() {
+      return extractProperty(this.$props, attrKeys);
+    }
+  },
+  render(h) {
+    return h('el-input', { props: { ...this.elProps, type: 'textarea' }, on: this.$listeners, attrs: { ...this.attrs } });
+  }
+};

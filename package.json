@@ -4,9 +4,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lib": "vue-cli-service build --target lib --name xui --dest lib packages/index.js",
+    "lib": "vue-cli-service build --target lib --name gc-el --dest lib packages/index.js",
     "lint": "vue-cli-service lint"
   },
+  "main": "lib/gc.umd.min.js",
   "description": "KDGC组件库",
   "keywords": [
     "component",
@@ -25,10 +26,11 @@
     "url": "git+https://github.com/Johnny-KK/gc-el.git"
   },
   "contributors": [
-    "johnny"
+    "johnny-kk"
   ],
   "dependencies": {
     "core-js": "^3.6.4",
+    "element-gc": "^0.2.4",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -38,6 +40,8 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -57,6 +61,5 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ],
-  "main": "lib/xui.umd.min.js"
+  ]
 }
