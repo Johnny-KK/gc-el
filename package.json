@@ -1,7 +1,7 @@
 {
   "name": "gc-el",
   "version": "0.0.3",
-  "main": "lib/gc.umd.min.js",
+  "main": "lib/gc-el.umd.min.js",
   "description": "KDGC组件库",
   "keywords": [
     "component",
