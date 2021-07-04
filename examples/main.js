@@ -1,13 +1,15 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
 
-// 导入组件库
-import GcEl from '../packages'
-// 注册组件库
-Vue.use(GcEl, {api: '999'})
+Vue.config.productionTip = false;
 
-Vue.config.productionTip = false
+import ElementGc from 'element-gc';
+import 'element-gc/lib/theme-chalk/index.css';
+Vue.use(ElementGc);
+
+import GcEl from '../packages/index';
+Vue.use(GcEl);
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount('#app');

@@ -14,7 +14,7 @@ const GC_INPUT_PROPS = {
   show: { type: Boolean, default: true },
   prefixText: { type: String, default: '' },
   suffixText: { type: String, default: '' },
-  tips: { type: Array, default: () => [] },
+  tips: { type: Array, default: () => [] }
 };
 
 /**
@@ -40,12 +40,12 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    },
+    }
   },
   methods: {
     handleTipClick(event) {
       this.$emit('input', event.target.innerHTML);
-    },
+    }
   },
   render(h) {
     const tipStyle = {
@@ -53,7 +53,7 @@ export default {
       color: '#09f',
       'font-size': '20px',
       'margin-right': '30px',
-      'background-color': '#EEE9E9',
+      'background-color': '#EEE9E9'
     };
     return h('div', {}, [
       h(
@@ -61,7 +61,7 @@ export default {
         {
           props: { ...this.elProps },
           on: this.$listeners,
-          attrs: { ...this.attrs },
+          attrs: { ...this.attrs }
         },
         [
           this.prefixText === ''
@@ -69,7 +69,7 @@ export default {
             : h(
                 'template',
                 {
-                  slot: 'prepend',
+                  slot: 'prepend'
                 },
                 this.prefixText
               ),
@@ -78,13 +78,13 @@ export default {
             : h(
                 'template',
                 {
-                  slot: 'append',
+                  slot: 'append'
                 },
                 this.suffixText
-              ),
+              )
         ]
       ),
-      this.tips.map((x) => h('span', { style: tipStyle, on: { click: this.handleTipClick } }, x)),
+      this.tips.map(x => h('span', { style: tipStyle, on: { click: this.handleTipClick } }, x))
     ]);
-  },
+  }
 };
