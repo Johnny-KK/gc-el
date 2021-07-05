@@ -12,7 +12,7 @@ const GC_SELECT_PROPS = {
   placeholder: { type: String, default: '' },
   options: { type: Array, default: () => [] },
   labelName: { type: String, default: 'label' },
-  valueName: { type: String, default: 'value' }
+  valueName: { type: String, default: 'value' },
 };
 
 /**
@@ -38,14 +38,14 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     const styles = { width: '100%' };
     return h(
       'el-select',
       { props: { ...this.elProps }, on: this.$listeners, attrs: { ...this.attrs }, style: { ...styles } },
-      this.options.map(x => h('el-option', { props: { label: x[this.labelName], value: x[this.valueName] } }))
+      this.options.map((x) => h('el-option', { props: { label: x[this.labelName], value: x[this.valueName] } }))
     );
-  }
+  },
 };

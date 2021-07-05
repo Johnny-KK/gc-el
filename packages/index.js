@@ -1,11 +1,3 @@
-// const getAllComponent = () => {
-//   const requireConfig = require.context('./', true, /index.js$/);
-//   return requireConfig.keys().map((path) => requireConfig(path));
-// };
-
-// const componentList = getAllComponent();
-
-// import GcInput from './gc-input';
 import GcDatePicker from './gc-date-picker/index';
 import GcForm from './gc-form/index';
 import GcInput from './gc-input/index';
@@ -44,9 +36,22 @@ const componentList = [
   GcUpload,
 ];
 
+import ElementGc from 'element-gc';
+import 'element-gc/lib/theme-chalk/index.css';
+
 const install = (Vue, options = {}) => {
-  console.log(options);
+  Vue.use(ElementGc);
   componentList.forEach((c) => Vue.component(c.name, c));
+
+  const apiQueryDeptTree = options.apiQueryDeptTree || null;
+  const apiQueryDictList = options.apiQueryDictList || null;
+  const apiQueryAllMenuIncludeEnabled = options.apiQueryAllMenuIncludeEnabled || null;
+  const apiGetSysUser = options.apiGetSysUser || null;
+  Vue.prototype.$gcEl = {};
+  Vue.prototype.$gcEl.apiQueryDeptTree = apiQueryDeptTree;
+  Vue.prototype.$gcEl.apiQueryDictList = apiQueryDictList;
+  Vue.prototype.$gcEl.apiQueryAllMenuIncludeEnabled = apiQueryAllMenuIncludeEnabled;
+  Vue.prototype.$gcEl.apiGetSysUser = apiGetSysUser;
 };
 
 export default {
