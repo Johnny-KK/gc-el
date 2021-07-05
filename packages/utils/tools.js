@@ -51,6 +51,6 @@ export function deepClone(obj) {
  */
 export function extractProperty(source, keyList) {
   const result = {};
-  keyList.forEach(x => (result[x] = source[x]));
+  keyList.forEach((x) => (result[x] = source[x]));
   return result;
 }

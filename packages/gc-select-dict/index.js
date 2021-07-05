@@ -10,7 +10,7 @@ const GC_SELECT_DICT_PROPS = {
   disabled: { type: Boolean, default: false },
   placeholder: { type: String, default: '' },
   clearable: { type: Boolean, default: false },
-  catCode: { type: String, default: '', required: true }
+  catCode: { type: String, default: '', required: true },
 };
 
 /**
@@ -36,13 +36,13 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     const apiQueryDictList = this.$gcEl.apiQueryDictList;
     return h('gc-select-api', {
       props: { ...this.elProps, api: apiQueryDictList, apiParams: this.catCode, labelName: 'dictName', valueName: 'dictCode' },
-      on: this.$listeners
+      on: this.$listeners,
     });
-  }
+  },
 };

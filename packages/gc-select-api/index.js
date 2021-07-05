@@ -15,9 +15,9 @@ const GC_SELECT_API_PROPS = {
   clearable: { type: Boolean, default: false },
   api: { type: Function, default: null, required: true },
   apiParams: { type: [String, Object], default: () => {}, required: false },
-  labelName: { required: true, type: String },
-  valueName: { required: true, type: String },
-  filterable: { type: Boolean, default: false }
+  labelName: { required: false, type: String, default: 'label' },
+  valueName: { required: false, type: String, default: 'value' },
+  filterable: { type: Boolean, default: false },
 };
 
 /**
@@ -39,7 +39,7 @@ export default {
   props: { ...GC_SELECT_API_PROPS },
   data() {
     return {
-      options: []
+      options: [],
     };
   },
   created() {
@@ -48,14 +48,8 @@ export default {
       return false;
     }
     this.api(this.apiParams)
-      .then(res => {
-        if (res.success === true) {
-          this.options = res.data;
-        } else {
-          console.error(res.content);
-        }
-      })
-      .catch(err => {
+      .then((data) => (this.options = data))
+      .catch((err) => {
         console.error(err);
       });
   },
@@ -65,9 +59,9 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     return h('gc-select', { props: { ...this.elProps, options: this.options, labelName: this.labelName, valueName: this.valueName }, on: this.$listeners });
-  }
+  },
 };

@@ -9,7 +9,7 @@ const GC_TEXTAREA_PROPS = {
   readonly: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   placeholder: { type: String, default: '' },
-  rows: { type: Number, default: 2 }
+  rows: { type: Number, default: 2 },
 };
 
 /**
@@ -35,9 +35,9 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     return h('el-input', { props: { ...this.elProps, type: 'textarea' }, on: this.$listeners, attrs: { ...this.attrs } });
-  }
+  },
 };

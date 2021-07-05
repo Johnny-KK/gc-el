@@ -13,7 +13,7 @@ const GC_UPLOAD_PROPS = {
   readonly: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   placeholder: { type: String, default: '' },
-  showFileFirst: { type: Boolean, default: true }
+  showFileFirst: { type: Boolean, default: true },
 };
 
 /**
@@ -39,7 +39,7 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     const styles = { border: '1px dashed #eee', 'border-radius': '5px' };
@@ -47,7 +47,7 @@ export default {
       props: { ...this.elProps },
       on: this.$listeners,
       attrs: { ...this.attrs },
-      style: { ...styles }
+      style: { ...styles },
     });
-  }
+  },
 };

@@ -26,7 +26,7 @@
 
 <script>
 // 本地数据默认处理--根据是否分页来判断是否包装数据
-const DEFAULT_HANDLE_LOCAL_DATA = data => {
+const DEFAULT_HANDLE_LOCAL_DATA = (data) => {
   if (this.isPage) {
     const actData = data.slice((this.page.currentPage - 1) * this.page.pageSize, this.page.currentPage * this.page.pageSize);
     return Promise.resolve({ current: '', total: data.length, records: actData });
@@ -34,14 +34,14 @@ const DEFAULT_HANDLE_LOCAL_DATA = data => {
   return Promise.resolve(data);
 };
 // 远程接口数据默认处理--根据success字段判断是否成功
-const DEFAULT_HANDLE_API_DATA = data => {
+const DEFAULT_HANDLE_API_DATA = (data) => {
   return new Promise((reslove, reject) => (data.success === true ? reslove(data.data) : reject({ msg: data.content })));
 };
 
 // 数据不分页处理--直接返回
-const DEFAULT_HANDLE_NO_PAGE = data => Promise.resolve({ records: data, page: null });
+const DEFAULT_HANDLE_NO_PAGE = (data) => Promise.resolve({ records: data, page: null });
 // 数据分页处理--分别提取数据和分页信息
-const DEFAULT_HANDLE_USE_PAGE = data => {
+const DEFAULT_HANDLE_USE_PAGE = (data) => {
   // TODO 处理分页对象
   return Promise.resolve({ records: data.records, page: { currentPage: data.current, total: data.total } });
 };
@@ -49,7 +49,7 @@ const DEFAULT_HANDLE_USE_PAGE = data => {
 export default {
   name: 'gc-table',
   props: {
-    tableConfig: { required: true } // 表格配置项
+    tableConfig: { required: true }, // 表格配置项
   },
   data() {
     return {
@@ -62,8 +62,8 @@ export default {
         pageSize: 10, // 每页个数
         pageSizes: [5, 10, 20, 30, 40], // 每页个数选择器
         hideOnSinglePage: false, // 只有一页是否隐藏分页
-        pagerCount: 5 // 页码按钮的数量
-      } // 分页对象
+        pagerCount: 5, // 页码按钮的数量
+      }, // 分页对象
     };
   },
   computed: {
@@ -77,7 +77,7 @@ export default {
     },
     // 表格字段
     fieldList() {
-      return this.tableConfig.fieldList.map(x => {
+      return this.tableConfig.fieldList.map((x) => {
         // type不指定则为默认类型
         if (x.type === null || x.type === undefined) {
           x.type = this.COLUMN_TYPE.TEXT;
@@ -88,7 +88,7 @@ export default {
     // 参数重构 添加分页信息
     apiParamsWithPage() {
       return Object.assign({}, this.tableConfig.apiParams, { currentPage: this.page.currentPage, pageSize: this.page.pageSize });
-    }
+    },
   },
   created() {
     this.getData();
@@ -147,8 +147,8 @@ export default {
       this.page.pageSize = pageSize;
       this.page.currentPage = 1;
       this.getData();
-    }
-  }
+    },
+  },
 };
 </script>
 

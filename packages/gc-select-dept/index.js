@@ -13,7 +13,7 @@ const GC_SELECT_DEPT_PROPS = {
   placeholder: { type: String, default: '' },
   clearable: { type: Boolean, default: false },
   filterable: { type: Boolean, default: false },
-  showAllLevels: { type: Boolean, default: false }
+  showAllLevels: { type: Boolean, default: false },
 };
 
 /**
@@ -36,20 +36,14 @@ export default {
   data() {
     return {
       options: [],
-      deptName: ''
+      deptName: '',
     };
   },
   created() {
     const apiQueryDeptTree = this.$gcEl.apiQueryDeptTree;
     apiQueryDeptTree()
-      .then(res => {
-        if (res.success === true) {
-          this.options = res.data;
-        } else {
-          console.error(res.content);
-        }
-      })
-      .catch(err => {
+      .then((data) => (this.options = data))
+      .catch((err) => {
         console.error(err);
       });
   },
@@ -59,7 +53,7 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   methods: {
     //递归获取当前部门信息
@@ -75,7 +69,7 @@ export default {
           }
         }
       }
-    }
+    },
   },
   render(h) {
     const styles = { width: '100%' };
@@ -83,5 +77,5 @@ export default {
     this.deptName = this.getDeptName(this.options, this.value);
     this.$emit('changeDept', this.value, this.deptName);
     return h('el-cascader', { props: { ...this.elProps, options: this.options, props: props }, on: this.$listeners, style: { ...styles } });
-  }
+  },
 };

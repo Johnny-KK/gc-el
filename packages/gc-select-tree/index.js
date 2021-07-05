@@ -8,7 +8,7 @@ const GC_SELECT_TREE_PROPS = {
   value: { type: [String, Number], default: '', required: true },
   readonly: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
-  placeholder: { type: String, default: '' }
+  placeholder: { type: String, default: '' },
 };
 
 /**
@@ -31,21 +31,15 @@ export default {
   data() {
     return {
       treeData: [],
-      treeProps: { value: 'orgCode', label: 'orgName', children: 'children' }
+      treeProps: { value: 'orgCode', label: 'orgName', children: 'children' },
     };
   },
   created() {
     const apiQueryDeptTree = this.$gcEl.apiQueryDeptTree;
     // 树数据查询
     apiQueryDeptTree()
-      .then(res => {
-        if (res.success === true) {
-          this.treeData = res.data;
-        } else {
-          console.error(res.content);
-        }
-      })
-      .catch(err => {
+      .then((data) => (this.treeData = data))
+      .catch((err) => {
         console.error(err);
       });
   },
@@ -55,14 +49,12 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   methods: {
     handleNodeClick(node) {
       this.value = node[this.treeProps.label];
-      // this.valueId = node[this.props.value];
-      // this.$emit('getValue', this.valueId, this.valueTitle);
-    }
+    },
   },
   render(h) {
     const styles = { width: '100%' };
@@ -72,24 +64,24 @@ export default {
         props: { ...this.elProps },
         on: this.$listeners,
         attrs: { ...this.attrs },
-        style: { ...styles }
+        style: { ...styles },
       },
       [
         h(
           'el-option',
           {
-            props: { label: '999' }
+            props: { label: '999' },
           },
           [
             h('el-tree', {
               props: { data: this.treeData, props: this.treeProps, 'node-key': this.treeProps.value },
               on: {
-                'node-click': this.handleNodeClick
-              }
-            })
+                'node-click': this.handleNodeClick,
+              },
+            }),
           ]
-        )
+        ),
       ]
     );
-  }
+  },
 };

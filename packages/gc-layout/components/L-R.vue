@@ -13,8 +13,8 @@
 export default {
   name: 'L-R',
   props: {
-    lWidth: { type: String, default: '20%' } // L宽度
-  }
+    lWidth: { type: String, default: '20%' }, // L宽度
+  },
 };
 </script>
 

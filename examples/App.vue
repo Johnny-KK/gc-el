@@ -1,20 +1,20 @@
 <template>
   <div id="app">
     <gc-form :model="form" :form-config="formConfig"></gc-form>
-
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+const api = () => {
+  return Promise.resolve([
+    { label: '选项一', value: '1' },
+    { label: '选项二', value: '2' },
+    { label: '选项三', value: '3' },
+  ]);
+};
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld,
-  },
   data() {
     return {
       form: {},
@@ -22,9 +22,30 @@ export default {
         mainConfig: { labelPosition: 'right', labelWidth: 120, span: 12 }, //默认的表单配置
         //填写表单内容
         fieldList: [
+          { type: 'date-picker', name: 'startTime', label: '开始时间' },
+          { type: 'input', name: 'username', label: '姓名' },
+          { type: 'pic', name: 'avatar', label: '头像', span: 24 },
+          {
+            type: 'radio',
+            name: 'sex',
+            label: '性别',
+            options: [
+              { label: '0', text: 'male' },
+              { label: '1', text: 'female' },
+              { label: '2', text: 'unknown' },
+            ],
+          },
+          {
+            type: 'select',
+            name: 'place',
+            label: '地点',
+            options: [
+              { label: '户外', value: 'outside' },
+              { label: '室内', value: 'inside' },
+            ],
+          },
+          { type: 'select-api', name: 'opt', label: '选项', api: api },
           { type: 'select-dept', name: 'orgCode', label: '部门下拉' },
-          { type: 'select-menu', name: 'menuCode', label: '菜单下拉' },
-          { type: 'input', name: 'porgName', label: '上级部门', disabled: true, maxlength: '32', rules: [{ required: false }] },
           {
             type: 'select-dict',
             name: 'orgType',
@@ -33,24 +54,10 @@ export default {
             placeholder: '请选择',
             rules: [{ required: false }],
           },
-          { type: 'input', name: 'orgCode', label: '部门编码', tips: ['a', 'b', 'c'], suffixText: '小时', rules: [{ required: false }] },
-          { type: 'input', name: 'orgName', label: '部门名称', rules: [{ required: false }] },
-          { type: 'pic', name: 'avatar', label: '头像', span: 12 },
-          {
-            type: 'select-dict',
-            name: 'enabled',
-            catCode: 'enabled',
-            label: '是否启用',
-            placeholder: '请选择',
-          },
-          {
-            type: 'select-dict',
-            name: 'virtual',
-            catCode: 'deleted',
-            label: '是否虚拟机构',
-            placeholder: '请选择',
-          },
-          { type: 'date-picker', name: 'foundTime', label: '成立时间', placeholder: '选择日期' },
+          { type: 'select-menu', name: 'menuCode', label: '菜单下拉' },
+          { type: 'select-tree', name: 'tree', label: '树' },
+          { type: 'select-user', name: 'user', label: '用户' },
+          { type: 'switch', name: 'sss', label: '转换' },
           { type: 'textarea', name: 'remark', label: '备注', placeholder: '备注', maxlength: 256, span: 24 },
         ],
       },

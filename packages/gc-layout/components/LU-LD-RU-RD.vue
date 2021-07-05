@@ -23,8 +23,8 @@
 export default {
   name: 'LU-LD-RU-RD',
   props: {
-    lWidth: { type: String, default: '20%' } // L宽度
-  }
+    lWidth: { type: String, default: '20%' }, // L宽度
+  },
 };
 </script>
 

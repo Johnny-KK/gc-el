@@ -8,7 +8,7 @@ const GC_PIC_PROPS = {
   value: { type: [String, Number], default: '', required: true },
   readonly: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
-  placeholder: { type: String, default: '' }
+  placeholder: { type: String, default: '' },
 };
 
 /**
@@ -34,11 +34,11 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   data() {
     return {
-      imgPath: null
+      imgPath: null,
     };
   },
   async created() {
@@ -66,7 +66,7 @@ export default {
       }
       this.imgPath = URL.createObjectURL(files[0]);
       this.$emit('input', files[0]);
-    }
+    },
   },
   render(h) {
     const iconStyle = {
@@ -77,7 +77,7 @@ export default {
       'line-height': '178px',
       'text-align': 'center',
       border: '1px dashed #d9d9d9',
-      cursor: 'pointer'
+      cursor: 'pointer',
     };
     const inputStyle = { display: 'none' };
     const imgStyle = { width: '178px', height: '178px', display: 'block', border: '1px dashed #d9d9d9', cursor: 'pointer' };
@@ -88,24 +88,24 @@ export default {
             class: 'el-icon-plus',
             style: { ...iconStyle },
             on: {
-              click: this.handleClick
-            }
+              click: this.handleClick,
+            },
           })
         : h('img', {
             attrs: { src: this.imgPath },
             style: { ...imgStyle },
             on: {
-              click: this.handleClick
-            }
+              click: this.handleClick,
+            },
           }),
       h('input', {
         attrs: { type: 'file' },
         class: 'file-input',
         style: { ...inputStyle },
         on: {
-          change: this.handleFileChange
-        }
-      })
+          change: this.handleFileChange,
+        },
+      }),
     ]);
-  }
+  },
 };

@@ -9,7 +9,7 @@ const GC_Radio_PROPS = {
   readonly: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   placeholder: { type: String, default: '' },
-  options: { type: Array, default: () => [] }
+  options: { type: Array, default: () => [] },
 };
 
 /**
@@ -35,14 +35,14 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     const styles = { height: '32px', 'line-height': '32px', padding: '0 10px' };
     return h(
       'el-radio-group',
       { props: { ...this.elProps }, on: this.$listeners, attrs: { ...this.attrs }, style: { ...styles } },
-      this.options.map(x => h('el-radio', { props: { label: x.label } }, [x.text]))
+      this.options.map((x) => h('el-radio', { props: { label: x.label } }, [x.text]))
     );
-  }
+  },
 };

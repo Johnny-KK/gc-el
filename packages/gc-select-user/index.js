@@ -9,7 +9,7 @@ const GC_SELECT_USER_PROPS = {
   readonly: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   placeholder: { type: String, default: '' },
-  clearable: { type: Boolean, default: false }
+  clearable: { type: Boolean, default: false },
 };
 
 /**
@@ -35,13 +35,13 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     const apiGetSysUser = this.$gcEl.apiGetSysUser;
     return h('gc-select-api', {
       props: { ...this.elProps, api: apiGetSysUser, labelName: 'userName', valueName: 'userAccount' },
-      on: this.$listeners
+      on: this.$listeners,
     });
-  }
+  },
 };

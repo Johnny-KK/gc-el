@@ -14,7 +14,7 @@ const GC_DATE_PICKER_PROPS = {
   dateType: { type: String, default: 'date' },
   startPlaceholder: { type: String, default: '' },
   endPlaceholder: { type: String, default: '' },
-  rangeSeparator: { type: String, default: '' }
+  rangeSeparator: { type: String, default: '' },
 };
 
 /**
@@ -40,7 +40,7 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     const styles = { width: '100%' };
@@ -48,7 +48,7 @@ export default {
       props: { ...this.elProps, type: this.dateType },
       on: this.$listeners,
       attrs: { ...this.attrs },
-      style: { ...styles }
+      style: { ...styles },
     });
-  }
+  },
 };

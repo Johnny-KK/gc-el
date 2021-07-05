@@ -46,7 +46,7 @@
       </el-row>
 
       <el-row v-if="operateConfig && operateConfig.length > 0">
-        <el-form-item style="float: right;">
+        <el-form-item style="float: right">
           <template v-for="(btn, i) in operateConfig">
             <el-button v-if="btn.type === 'submit'" :key="i" @click="submit(btn.action, btn.callback)">提交</el-button>
             <el-button v-else-if="btn.type === 'submitForm'" :key="i" @click="submitForm(btn.action, btn.callback)">提交</el-button>
@@ -82,11 +82,11 @@ export default {
   name: 'gc-form',
   props: {
     model: { type: Object, required: true, default: () => ({}) }, // 表单实体
-    formConfig: { required: true, validator: formConfigValidator } // 表单配置
+    formConfig: { required: true, validator: formConfigValidator }, // 表单配置
   },
   data() {
     return {
-      loading: false
+      loading: false,
     };
   },
   computed: {
@@ -99,7 +99,7 @@ export default {
     // 表单项目配置
     fieldListConfig() {
       // 设置span 设置tagName
-      const formConfigComplete = this.formConfig.fieldList.map(x => {
+      const formConfigComplete = this.formConfig.fieldList.map((x) => {
         const item = Object.assign({}, x);
         // 修正span值
         if (item.span === null || item.span === undefined) {
@@ -117,7 +117,7 @@ export default {
 
       // 布局类型为 col-row 根据span分行显示
       const result = [[]];
-      formConfigComplete.forEach(x => {
+      formConfigComplete.forEach((x) => {
         const reduceIndex = result[result.length - 1].reduce((ac, cu) => ac + (cu.show ? cu.span : 0), 0) + (x.show ? x.span : 0); // show: false 不展示的组件也不占用空间
         if (reduceIndex > 24) {
           result.push([x]);
@@ -134,7 +134,7 @@ export default {
     // 校验规则配置
     rulesConfig() {
       const result = {};
-      this.formConfig.fieldList.forEach(x => {
+      this.formConfig.fieldList.forEach((x) => {
         if (Array.isArray(x.rules)) {
           result[x.name] = x.rules;
         }
@@ -144,7 +144,7 @@ export default {
     // 表单样式
     formClass() {
       return { sBar: this.mainConfig.layout === 'inline', bg: this.mainConfig.layout === 'inline', font_medium: true };
-    }
+    },
   },
   methods: {
     //部门选择问题->默认显示最后一级
@@ -163,14 +163,14 @@ export default {
       }
       // TODO 提供配置控制loading是否显示
       this.loading = true;
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (!valid) {
           this.$emit('error', valid);
           this.loading = false;
           return false;
         }
         api(this.model)
-          .then(res => {
+          .then((res) => {
             if (res.success === true) {
               this.$message.success(res.content);
               this.$emit('success', res);
@@ -179,7 +179,7 @@ export default {
               this.$emit('error', res);
             }
           })
-          .catch(err => {
+          .catch((err) => {
             this.$message.error(err.content);
             this.$emit('error', err);
           })
@@ -196,7 +196,7 @@ export default {
       }
       // TODO 提供配置控制loading是否显示
       this.loading = true;
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (!valid) {
           this.$emit('error', valid);
           this.loading = false;
@@ -209,7 +209,7 @@ export default {
             continue;
           }
           // 文件类型特殊处理
-          const typeItem = this.formConfig.fieldList.find(x => x.name === key);
+          const typeItem = this.formConfig.fieldList.find((x) => x.name === key);
           if (typeItem && typeItem.type === 'pic') {
             const file = this.model[key];
             // fd.append(key, '');
@@ -219,7 +219,7 @@ export default {
           }
         }
         api(fd)
-          .then(res => {
+          .then((res) => {
             if (res.success === true) {
               this.$message.success(res.content);
               this.$emit('success', res);
@@ -228,7 +228,7 @@ export default {
               this.$emit('error', res);
             }
           })
-          .catch(err => {
+          .catch((err) => {
             this.$message.error(err.content);
             this.$emit('error', err);
           })
@@ -237,8 +237,8 @@ export default {
             typeof callback === 'function' && callback();
           });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

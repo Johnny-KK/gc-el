@@ -16,7 +16,7 @@ const allowComponents = [
   { name: 'select-menu', label: '菜单下拉框' },
   // { name: 'select-menu-tree', label: '菜单树下拉框' },
   { name: 'date-picker', label: '日期选择器' },
-  { name: 'pic', label: '图片上传' }
+  { name: 'pic', label: '图片上传' },
 ];
 
 /**
@@ -40,7 +40,7 @@ function formConfigValidator(config) {
   // 检查字段是否缺少
   const mainConfigKeys = ['labelWidth', 'labelPosition', 'span'];
   const targetKeys = Object.keys(mainConfig);
-  if (mainConfigKeys.some(x => targetKeys.indexOf(x) === -1)) {
+  if (mainConfigKeys.some((x) => targetKeys.indexOf(x) === -1)) {
     console.error(`表单主题配置项目为${mainConfigKeys.join('、')}: 请检查是否有遗漏项目`);
     return false;
   }
@@ -69,9 +69,9 @@ function formConfigValidator(config) {
     return false;
   }
 
-  config.fieldList.forEach(x => {
+  config.fieldList.forEach((x) => {
     // 检查配置类型是否在允许范围内
-    if (allowComponents.map(x => x.name).indexOf(x.type) === -1) {
+    if (allowComponents.map((x) => x.name).indexOf(x.type) === -1) {
       console.error(`配置${JSON.stringify(x)}: type类型不对，不在指定范围内，请检查配置`);
       return false;
     }
@@ -83,7 +83,7 @@ function formConfigValidator(config) {
 /**
  * 表单配置自动补全 补全表单缺少的默认字段
  */
-const compileFormConfig = config => {
+const compileFormConfig = (config) => {
   return config;
 };
 
@@ -92,10 +92,10 @@ const defaultFormConfig = {
   mainConfig: {
     labelWidth: 80,
     span: 8,
-    labelPosition: 'right'
+    labelPosition: 'right',
   },
   fieldList: [],
-  operateConfig: { reset: true, submit: true }
+  operateConfig: { reset: true, submit: true },
 };
 
 export default { compileFormConfig, allowComponents, defaultFormConfig };

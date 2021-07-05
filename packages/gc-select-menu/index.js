@@ -11,7 +11,7 @@ const GC_SELECT_MENU_PROPS = {
   readonly: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
   placeholder: { type: String, default: '' },
-  clearable: { type: Boolean, default: false }
+  clearable: { type: Boolean, default: false },
 };
 
 /**
@@ -33,20 +33,14 @@ export default {
   props: { ...GC_SELECT_MENU_PROPS },
   data() {
     return {
-      options: []
+      options: [],
     };
   },
   created() {
     const apiQueryAllMenuIncludeEnabled = this.$gcEl.apiQueryAllMenuIncludeEnabled;
     apiQueryAllMenuIncludeEnabled()
-      .then(res => {
-        if (res.success === true) {
-          this.options = res.data;
-        } else {
-          console.error(res.content);
-        }
-      })
-      .catch(err => {
+      .then((data) => (this.options = data))
+      .catch((err) => {
         console.error(err);
       });
   },
@@ -56,11 +50,11 @@ export default {
     },
     attrs() {
       return extractProperty(this.$props, attrKeys);
-    }
+    },
   },
   render(h) {
     const styles = { width: '100%' };
     const props = { label: 'name', value: 'menuCode' };
     return h('el-cascader', { props: { ...this.elProps, options: this.options, props: props }, on: this.$listeners, style: { ...styles } });
-  }
+  },
 };
