@@ -38,6 +38,7 @@
     <!-- layout row-col -->
     <template v-else>
       <el-row v-for="(row, rowIndex) in fieldListConfig" :key="rowIndex">
+        <!-- <el-divider content-position="left">分组</el-divider> -->
         <el-col v-for="config in row" :key="config.name" :span="config.span">
           <el-form-item :label="config.label" :prop="config.name" v-show="config.show" @click.native="$emit('click-form-item', config)">
             <component :is="`gc-${config.type}`" v-model="model[config.name]" v-bind="config" @changeDept="changeDept" />
@@ -72,6 +73,7 @@
  * TODO 增加级联选择器组件
  * TODO 增加通用树型下拉框组件 ？？
  * TODO 日期范围选择组件
+ * TODO 分组表单
  *
  * FIXME
  */

@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import App from './App.vue';
 
+import './styles/theme1/index';
+
 import { apiQueryDeptTree, apiQueryDictList, apiQueryAllMenuIncludeEnabled } from './apis';
 
 import GcEl from '../packages/index';

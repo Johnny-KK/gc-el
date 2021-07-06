@@ -1,0 +1,202 @@
+/*
+***************************************************
+layout
+height,font size,line-height
+***************************************************
+*/
+.co_login{ width: 100%; height: 100% }
+.co_loginHead{ height: 80px}
+.co_loginFoot{ height: 50px}
+.co_loginBody{ padding: 0px 0 50px 0}
+.co_container{ width: 100%; height: 100%; margin: 0 auto;}
+h1,h2,h3,h4,h5,h6{ margin: 0; padding: 0;}
+.h1, h1 { font-size: 30px; line-height: 46px;}
+.h2, h2 { font-size: 20px; line-height: 30px; font-weight: 500; color: #333}
+.h3, h3 { font-size: 18px; line-height: 28px; font-weight: 500}
+.h4, h4 { font-size: 16px; line-height: 24px; font-weight: 500}
+.h5, h5 { font-size: 14px; line-height: 22px; font-weight: 500; color: #444; transition: color 1s}
+.h6, h6 { font-size: 12px; line-height: 18px;}
+.gray{ color: #999!important}
+*{ box-sizing: border-box;}
+
+
+/* all */
+.co_login{ position: relative; background: url(../img/bg2.png) center top; background-size: cover; overflow: hidden}
+.co_loginHead,.co_loginFoot,.co_loginBody{ width: 100%; box-sizing: border-box; transition: background 0.5s;}
+.co_loginHead{ position: absolute}
+.co_loginFoot{ position: absolute; bottom:0; text-align: center; color: rgba(255,255,255,0.5)}
+.co_formHead h1{ text-align: center; color: #636F80;}
+/*logo in co_loginHead*/
+.co_loginHead>.co_container{ background: url(../img/loginLogo.png) no-repeat; border-bottom: none; background-position: left center;}
+.co_loginHead>.co_container>span{ float: right; font-size:28px; color: rgba(255,255,255,0.9); line-height: 80px;}
+/* co_loginBody */
+.co_loginBanner,.co_loginArea{ height: 100%; padding: 10px;}
+.co_loginBanner{ width: 50%; float: left; background: rgba(0,0,0,0.0); display: none; box-sizing: border-box;  background: url(../img/pop.png) center center no-repeat; background-size: contain}
+.co_loginArea{ margin: 0 auto; box-sizing: border-box; position: relative}
+
+/* co_loginBanner in co_loginBody */
+.co_adText{ position: absolute; margin-left: 30px; padding: 0px 20px; background-color: rgba(0,0,0,0.6); border-radius: 8px; top:450px; color: #FFF}
+
+/*co_loginArea in co_loginBody*/
+.co_loginBox{ background: none; border-radius: 8px; padding: 10px 25px 30px 25px; position:relative; transition: background 0.4s; transform-origin:top right; top:50%; transform: translateY(-50%); box-shadow: 0 8px 41px 0 rgba(35,104,189,0.15);
+border-radius: 8px;}
+
+/*signtype in co_loginBox*/
+.co_signType{ opacity: 1; display: none; position: absolute; top:0; right:0; width: 60px; height:60px; background: url(../img/loginType.png) no-repeat; border-radius: 0 8px 0 0}
+.co_signType.pc{ background-position: -260px -260px; transition: background-position 0.3s}
+.co_signType.phone{ background-position: -200px -200px;  transition: background-position 0.3s}
+.co_signTab{ display: block; left:0; width:100%; text-align: center; top:-85px; position: absolute; font-weight: 600;}
+.co_signTab>a{ margin: 12px 0 16px 0; min-width: 92px; text-decoration: none; position:relative; display: inline-block; color: rgba(255,255,255,0.5);}
+.co_signTab>a.active{ color: #FFFFFF}
+.co_signTab>a.active:before{ content: ""; position: absolute; left:0px; bottom:-6px; display: block; width:100%; height:4px; background:#FFF; border-radius: 4px;}
+.co_signTab>a.active:after{ content: ""; position: absolute;
+bottom:-17px; left:50%; margin-left:-6px;
+	border-width: 6px;
+    border-style: solid;
+    border-color: #FFFFFF transparent transparent transparent
+}
+.co_signTab>span.space{ width: 60px; display: inline-block;}
+
+/* foot */
+.co_copyright{ padding: 8px; display: inline-block}
+
+
+/*
+********************
+Error Message
+********************
+*/
+.co_formMessage{ background-color: #fadcd9; padding: 20px 20px 20px 50px; margin-bottom: 16px; border: 1px solid #db1802; border-radius: 6px; position: relative}
+.co_formError{ width: 32px; height: 32px; display: inline-block; position: absolute; left: 10px; top:15px;  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgEAYAAAAj6qa3AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAABFlJREFUaN7tl11IVFsUx/9rnELJD0ybmBODJj2UD8KZc8xh1HEU8SXzwS8MkogeVCRGJdApCYRiQkYYDEGFCh9UUBxQlJJEBMGPhzNEvgiZ4EcOWCGoiF8z+z4cRivvvTOOH9e6839be++1zlq/s84+ewMBBRRQQP9jBZ32A5OjkqOSo8LCVPGqeFX8w4ecmlNz6rAwp9PpdDo/fz7tfBSn/cDN2M3YzdjOTtmyWlGKUpS+fSv2i/1if2bmHwuAn+Vn+dnbt2Xr1q29iRa0oEWhYENsiA01NgpaQStoz537YwDEd8V3xXedP08zNEMzVus/LhzFKEZv3JCNsrLTAnDie4DGpXFpXFVV1EM91FNU5NXBBBNMOh03z81z869eyXvDxsZJ5XdiHZDUkdSR1HH5Ms3RHM09ebI3UYMa1Hz6hG50o7u1Fe1oR/ubN3vzjWhEY2QkilCEorq6k8rvxAHs6HZ0O7rnz2UrIsIzzlbYClv5+FGKk+KkuJISpUPpUDrM5l/9mZEZmbGkRKvSqrSqhITfBoBoEA2igedpiIZo6P79AwtykYvc8HCP6Ta4DW7DPiCPqIzKqCwoiDSkIY3N9tsAYLWsltXabJ7d/UBhWZRFWfsAdgt3C3cL9+2/V3o6v8av8Wu5uWcWgDAmjAljd+7ADDPMBsO/r/7hjVeiEpUHO+AAuEmapEmrNY2lsTQWHHxmAOgWdAu6hZAQdKITnRaLVwc99NDvv3FaoiVa8tYBAFVTNVVfvbpWvFa8VlxVdWYA7AzsDOwM1NRgDGMYi4nx6qCFFtofClZDDbX3DtgDkUEZlGE283pez+s57qj5K/11FDfEDXFDo2GpLJWlPnrks+MEJjBx4YLcykrlurAurAvh4SAQyAf/JjShKTSU7GQnu8WCGMQg5t49f+vw+yCkzlfnq/NbW9GHPvTxvM+OTjjhJNrit/gt3uWiTMqkzPR0DGIQg9eu+RpGPlkmJHCMYxx7904+MH35ctg6fGH+k8RIMVKMTE5mBayAFYyOQoIEiQ4d59hkhBFGSZIapAap4eZNedDt9tX9kHuAQuGed8+751++PGrhrI7VsboPH1CBClQsL/sNYAQjGBEEYVgYFobv3j2su88AtL3aXm3vgwdkJCMZD9Hyvxaex/JYXkuLI9uR7cjm+e367frt+uvXwcDAvn3zG4QddtgtFvnyFRp6bADk62lEBK3SKq0+e+Z3gh6lIAUpMzMec2pqampqamUFBhhg+PrV77jjGMc4x4UshyyHLD9+fGwAWDNrZs0mE2ywwaZSHRmAAgoozGahTWgT2qqrhWlhWph+/frn67D/YiITmVhZmbiYuJi4GBXlbb3X3yBFUzRFX7ly5MI98UxkItPFi7L14sVxxd2LX07lVB4c7IYbbly6JI9+/+43AOWEckI58fTpLnaxC5dL/lajo4878SMrBznIYUz+Lb9/Lzkkh+SYnv6v0woooIACCugs6y88V4ql2YEEzQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xNlQxMDozMjowMyswODowMB0J13IAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTZUMTA6MzI6MDMrMDg6MDBsVG/OAAAAUnRFWHRzdmc6YmFzZS11cmkAZmlsZTovLy9ob21lL2FkbWluL2ljb24tZm9udC90bXAvaWNvbl9vZmdkczN4azd3ZC9FcnJvcmNvcnJlY3Rpb24uc3Znw0AVsQAAAABJRU5ErkJggg==")}
+.error{ border: 1px solid #F00!important; color: #F00!important; box-shadow: 0 10px 15px rgba(255,0,0,0.2)!important}
+.errorLabel{ font-size: 12px!important; color: #F00!important; position: absolute; top: 8px; right: 0; display: none}
+.error+.errorLabel{ display: inline-block}
+
+
+
+input::-webkit-input-placeholder { color: rgba(125,140,153,0.8); font-weight: 500;}
+
+/* phone form*/
+.co_phoneForm{ position: relative; text-align: center}
+.co_phoneForm>h4{ text-align: center; margin-top: 6px; margin-bottom: 24px; color: #b4bac2;}
+.code{ width: 220px; height: 220px; background: #CCC; margin: 0 auto;}
+
+/* all in pc form */
+.co_pcForm>h4{ text-align: center; margin-top: 6px; margin-bottom: 24px; color: #b4bac2;}
+.co_user,.co_pass,.co_remember,.co_corp{ padding:8px 0; position: relative}
+.co_remember{ margin-top:16px; margin-bottom: 4px; text-align: right;}
+.co_userInput,.co_passInput,.co_corpInput{ width: 100%; color: #7D8C99; -webkit-box-shadow: none;box-shadow: none; box-sizing: border-box; box-sizing: border-box; padding: 9px 12px 9px 40px; border: 1px solid #D0D6E5; border-radius: 4px; margin:0; background-color: #fff}
+.co_corpInput{ background-image:url(../img/icon-dz.png); background-repeat: no-repeat; background-position: 12px center;}
+.co_passInput{ background-image:url(../img/icon-mm.png); background-repeat: no-repeat; background-position: 12px center;}
+.co_userInput{ background-image:url(../img/icon-zh.png); background-repeat: no-repeat; background-position: 12px center;}
+
+.co_select{ position: absolute; width: 100%; z-index: 9}
+.co_select .select{ position: absolute; text-align: right; top:-44px; width: 100%; padding-right: 10px; box-sizing: border-box; height: 44px; line-height: 42px; color: #00C; cursor: pointer}
+.select>span{ padding-left:10px; line-height: 44px; display: inline-block; width: 20px; position: relative;}
+.select>span:before{
+	left:0; top:14px;
+	width: 10px; height: 10px;border-width: 0 0 1px 1px;
+	border-style: solid;border-color: #8095A8; position: absolute;content: "";
+	transform: rotateZ(-45deg); transition: transform 0.5s;
+}
+.select.active>span:before{
+	top:20px;
+	transform: rotateZ(-225deg);
+}
+.co_select .select:hover>span{ color: #F00;}
+.co_select .list{ background: #FFF; color: #7D8C99;  border:1px solid #BBB; border-radius: 4px; overflow: auto; max-height: 190px; display: none; display: none; position: relative; top:-3px;}
+
+.co_select li{ padding: 8px 12px}
+.co_select li:hover{ background: #EEE}
+.co_select li.now{ background: #DDD}
+
+
+.co_checkbox{ display: inline-block}
+.co_checkbox>.co_check{ display: inline-block; width: 22px; height: 22px; border: 1px solid #aab7c2; border-radius: 4px; margin-right: 8px; box-sizing: border-box; transition: border 0.2s; -moz-transition:border 0.2s; -webkit-transition:border 0.2s}
+.co_checkbox:hover>.co_check{border:2px solid #2d99e7}
+.co_checkbox.now>.co_check{ background: #2d99e7 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAALRJREFUSMftk0EORFAQRJ3IOWzEghAJh7AUCwQHsXMDcQ5xGaTLojMLmfYZMyaTidrUprteJb+/pt36dwEAEMfsw8BuWV8ClyVEdd3F4KKQwdMEAoFM83mRQCBd58G6ZjeM18B5vgkGALjuTkDbyo0dR72XZafB66AokoPGkd221/NpKs/PM7vnnXzDqlIXaRo12PcvPiYBTCBQELwNlotsfacHOAw/DpaLJAl73x8+rlu/rgVeL9XzXdnl+gAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wNC0xNlQxMToxNzo1OSswODowMJJKLVgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTktMDQtMTZUMTE6MTc6NTkrMDg6MDDjF5XkAAAARXRFWHRzdmc6YmFzZS11cmkAZmlsZTovLy9ob21lL2FkbWluL2ljb24tZm9udC90bXAvaWNvbl9ycHV3eHg5NGIwZS9vay5zdmfswrqdAAAAAElFTkSuQmCC") center center no-repeat; border-color: #2d99e7}
+.co_checkbox .co_text{ float: left; line-height: 22px}
+.co_help{ width: 22px; height: 22px; position: relative; display: inline-block; background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAA6dJREFUSMeVVV9Ik20U/z17myleTFBBcAMVDAfDzF0s/93kRGkomNvoKvwDghnN1zFBL9qNQuTmywQTJuSfFMFdFNjCgQSZmApBRSGMULAJoitQ2ET2+p7vYr1+Yd++187lc875/X7nPOc5D8NfGWO9bb1tvW2lpZRBGZRRUCAZJINkIEIXutC1u+tjPuZjnz4l44kUEVM53OQmN6WlHTUcNRw1PHgAN9xw8zwWsIAFrTYl4ha2sLW3R0u0REsez0nnSedJ59iYf8I/4Z9IJBQFOMud5c7ynJyzwrPCs8KXL6GDDrqqqr/r1G8WQgihd+8SU4mpxFRz85hpzDRm+vHjDwHnFVuPrEfWN29SEs9gBjPhMA5xiMOlJYQRRvjqVUQQQeTWLQQRRLC4OJWQeHW8Ol5dWyt35IrsP2+1Hnro/4N4GMMYfvUqHovH4rE7d/ycn/Nz/7bUZrPZbDaOyxfyhXzh2TN44IHn3r3z/HrUo76mJtOX6cv03b+fPPT5VPJwYRrTmHY6Uw6LlVmZ9cmTpHJRdBw4DhwH79/3dPR09HR8+BAIBAKBgCQlZ+Xx41Q4VERFVCTzMHmqr1+XNJJG0nz8mDLRQhayvH7NclgOyxHFpOCmJkQRRXR7e+9073Tv9No17bp2XbteUkIt1EItX76kLMjO7MxeWqqSn5PSLLEgC7Lg7dsyMQ3QAA2sr4vH4rF4XFOTa8u15doyMrCPfez7fIrDOYtZzBYVcaZN06ZpU69nIRZiobt3FRN58OCJxIgYESM3bqRVpVWlVYkip+N0nG51FRw4cDdvKsGQnvSkn5+/wrVz7Vz7zk7yChTpgRWsYEUU1Y3qRnWjy0VDNERDxcVIIIGEwXAJhKSAGMUotr2tGpkcmRyZ/PwZdthhj0QUM73wwssYG2fjbPzwEHOYw1w0elliGGGEcXd31DXqGnV9/frrFRBRBVVQhderqHyZlmn52zehX+gX+r1eMpKRjI8eXVpAHvKQ5/HIvCr5PAtZyMLTp+hDH/pWV1Pls0E2yAZLSvhsPpvPfv6c8Yxn/MKConCBBBLevtWYNWaNeXz8HO9iYPdG90b3Rna2ulXdqm598UJeIJeu8KI1oQlNKyssnaWz9OZmoVKoFCp//pTdqovx8q6WVybVUR3VORxYxCIWv39XJPx1x7DAAsvDh/H5+Hx83my+SJyyA/9vjPFr/Bq/ZjCgFrWoLSiQvJJX8jKmKlOVqcp2dpJE8gJS/o7/AT/YsXLJBC61AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA0LTE2VDExOjE1OjAwKzA4OjAwS8e20gAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNC0xNlQxMToxNTowMCswODowMDqaDm4AAABHdEVYdHN2ZzpiYXNlLXVyaQBmaWxlOi8vL2hvbWUvYWRtaW4vaWNvbi1mb250L3RtcC9pY29uXzlycnFnbTBoNWphL2hlbHAuc3Zngh7qYQAAAABJRU5ErkJggg==") center center no-repeat}
+.co_help:hover .co-tip{ visibility: visible; opacity: 1}
+.co-tip{ position: absolute; background: rgba(0,0,0,0.8); border-radius: 4px; color: #FFF; padding: 6px; visibility: hidden; opacity: 0; transition:opacity 0.6s; text-align: center; box-sizing: border-box}
+.co-tip:after{ content: ""; position: absolute;  border-width: 5px; border-style: solid}
+.co-tip.up{ bottom:110%; left: 50%; transform:translateX(-50%);}
+.co-tip.down{ top:110%; left: 50%; transform:translateX(-50%);}
+.co-tip.left{ top:-3px; right: 110%}
+.co-tip.right{ top:-3px; left: 110%}
+.co-tip.up:after{ top: 100%; left: 50%; margin-left: -5px; border-color: rgba(0,0,0,0.8) transparent transparent transparent;}
+.co-tip.down:after{ bottom: 100%; left: 50%; margin-left: -5px; border-color: transparent transparent rgba(0,0,0,0.8) transparent;}
+.co-tip.left:after{ left: 100%; top: 50%; margin-top: -5px; border-color: transparent transparent transparent rgba(0,0,0,0.8);}
+.co-tip.right:after{ right: 100%; top: 50%; margin-top: -5px; border-color: transparent rgba(0,0,0,0.8) transparent transparent;}
+
+
+
+/*
+********************
+button
+********************
+*/
+.co-btn{ color: #fff; background-image: linear-gradient(270deg, #2d99e7 0%, #2d99e7 100%); transition:background 0.2s; -moz-transition:background 0.2s; -webkit-transition:background 0.2s;  cursor: pointer;padding: 10px 24px 10px 24px; height:44px;line-height: 24px;border-radius: 4px;border-width: 0; font-weight: 600; width: 100%; box-shadow: 0px 15px 20px #2d99e740}
+.co-btn:hover{ background-image: linear-gradient(270deg,#116aab 0%, #116aab 100%); }
+.co-btn:active{ background: #116aab }
+
+/*
+********************
+实际项目需要
+********************
+*/
+#gridAnimate{ display: none}
+.co_pcForm label{ display: none;}
+
+/*
+********************
+only phone
+********************
+*/
+
+/*all container*/
+.co_loginHead { top:4px; padding: 0 46px}
+.co_loginHead>.co_container{ background-position: center center;}
+.co_loginHead>.co_container>span{ display: none;}
+.co_loginBox{ height:398px; padding: 34px 68px 38px 68px; margin-top: 60px; background: #FFF; transform-origin: top center}
+.co_signTab{ top:-80px}
+
+/*login center area*/
+.co_loginBanner{ display: none;}
+.co_loginArea{ width: 440px}
+.co_loginBox{ transform-origin: top right}
+.co_phoneForm{ height:268px}
+/*page background*/
+.co_login{ background-color: #666}
+.co_loginArea{ position: absolute; left:0; right:0}
+
+
+@media (max-width:520px) {
+	.co_loginArea{ width: 100%!important}
+}
+@media screen and (min-width:521px) {
+}
+
+@media screen and (min-width:768px) {
+}
+
+@media screen and (min-width:992px) {
+	.co_loginHead>.co_container{ background-position: left center;}
+	.co_loginHead>.co_container>span{ display: inline-block;}
+}
+@media screen and (max-width:1599px) {
+	/* public */
+	.h1, h1 { font-size: 24px!important; line-height: 36px!important;;}
+	.h4, h4 { font-size: 14px!important;; line-height: 22px!important;}
+	.h5, h5 { font-size: 14px!important;; line-height: 22px!important;}
+}
+@media screen and (min-width:1600px) {
+	/*all container*/
+	.co_loginHead { top:40px; padding: 0 66px}
+	/*login center area*/
+	.co_loginArea{ width: 516px; }
+	.co_loginBox{ padding: 44px 88px 68px 88px; margin-top: 85px; background: #FFF; transform-origin: top center}
+	.co_phoneForm{ height:273px}
+	/*page background*/
+	.co_login{ background-color: #333}
+}

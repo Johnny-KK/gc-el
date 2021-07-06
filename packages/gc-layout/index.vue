@@ -42,7 +42,6 @@ export default {
 .gc-layout {
   height: 100%;
   width: 100%;
-  padding: 10px 30px;
 
   .layout-content {
     height: 100%;

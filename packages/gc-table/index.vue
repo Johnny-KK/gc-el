@@ -3,7 +3,14 @@
     <el-table :data="tableData" stripe height="100%">
       <template v-for="(item, i) in fieldList">
         <el-table-column v-if="item.type === COLUMN_TYPE.INDEX" :key="i" type="index" :label="item.label" width="50"></el-table-column>
-        <el-table-column v-else :key="i" :prop="item.prop" :label="item.label"></el-table-column>
+        <el-table-column v-else-if="item.type === COLUMN_TYPE.LINK" :key="i" :label="item.label">
+          <template #default="{ row, $index }">
+            <el-link @click.native.stop="link.click(row, $index)" v-for="link in item.link" :key="link.name" type="primary" fixed="right">{{
+              link.name
+            }}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column v-else :key="i" :prop="item.prop" :label="item.label" :formatter="handleFormatter(item)"></el-table-column>
       </template>
     </el-table>
 
@@ -25,27 +32,9 @@
 </template>
 
 <script>
-// 本地数据默认处理--根据是否分页来判断是否包装数据
-const DEFAULT_HANDLE_LOCAL_DATA = (data) => {
-  if (this.isPage) {
-    const actData = data.slice((this.page.currentPage - 1) * this.page.pageSize, this.page.currentPage * this.page.pageSize);
-    return Promise.resolve({ current: '', total: data.length, records: actData });
-  }
-  return Promise.resolve(data);
-};
-// 远程接口数据默认处理--根据success字段判断是否成功
-const DEFAULT_HANDLE_API_DATA = (data) => {
-  return new Promise((reslove, reject) => (data.success === true ? reslove(data.data) : reject({ msg: data.content })));
-};
-
-// 数据不分页处理--直接返回
-const DEFAULT_HANDLE_NO_PAGE = (data) => Promise.resolve({ records: data, page: null });
-// 数据分页处理--分别提取数据和分页信息
-const DEFAULT_HANDLE_USE_PAGE = (data) => {
-  // TODO 处理分页对象
-  return Promise.resolve({ records: data.records, page: { currentPage: data.current, total: data.total } });
-};
-
+/**
+ * TODO 无限虚拟表格
+ */
 export default {
   name: 'gc-table',
   props: {
@@ -54,7 +43,7 @@ export default {
   data() {
     return {
       loading: false,
-      COLUMN_TYPE: Object.freeze({ TEXT: 'text', INDEX: 'index' }), // 表格列类型
+      COLUMN_TYPE: Object.freeze({ TEXT: 'text', INDEX: 'index', LINK: 'link' }), // 表格列类型
       tableData: [], // 表格数据
       page: {
         currentPage: 1, // 当前页码
@@ -98,44 +87,34 @@ export default {
     async getData() {
       this.loading = true;
       try {
-        // 从数据源加载数据 -- 拿到原始数据
-        const res = await this.loadDataFromDatasource(this.apiParamsWithPage);
-        // 数据初步处理 -- 拿到数据本身或者分页模式数据
-        const data = await this.handleDataByDatasource(res);
-        // 分页处理 -- 根据当前是否分页来将数据和分页信息剥离
-        const { records, page } = await this.handlePageByDatasource(data);
-        if (this.isPage) {
-          Object.assign(this.page, page);
-        }
+        const { records, page } = await this.loadDataAndPageFromSource();
         this.tableData = records;
+        page !== null && Object.assign(this.page, page);
       } catch (err) {
         console.error(err);
       } finally {
         this.loading = false;
       }
     },
-    /// 从数据源加载数据
-    loadDataFromDatasource(params) {
-      if (this.isLocalData) {
-        return Promise.resolve(this.tableConfig.localData);
+    // 从远程/本地数据源加载数据以及分页信息
+    async loadDataAndPageFromSource() {
+      if (this.isLocalData && this.isPage) {
+        return {
+          records: this.tableConfig.localData.slice((this.page.currentPage - 1) * this.page.pageSize, this.page.currentPage * this.page.pageSize),
+          page: { currentPage: this.page.currentPage, total: this.tableConfig.localData.length },
+        };
       }
-      return this.tableConfig.api(params);
-    },
-    // 数据源数据获取后处理
-    handleDataByDatasource(res) {
-      // TODO 允许用户自定义处理方式
-      if (this.isLocalData) {
-        return DEFAULT_HANDLE_LOCAL_DATA(res);
+      if (this.isLocalData && !this.isPage) {
+        return { records: this.tableConfig.localData, page: null };
       }
-      return DEFAULT_HANDLE_API_DATA(res);
-    },
-    // 分页数据处理
-    handlePageByDatasource(data) {
-      // TODO 允许用户自定义处理方式
-      if (!this.isPage) {
-        return DEFAULT_HANDLE_NO_PAGE(data);
+      if (!this.isLocalData && this.isPage) {
+        const res = await this.tableConfig.api(this.apiParamsWithPage);
+        return { records: res.records, page: { currentPage: res.current, total: res.total } };
       }
-      return DEFAULT_HANDLE_USE_PAGE(data);
+      if (!this.isLocalData && !this.isPage) {
+        const res = await this.tableConfig.api(this.apiParamsWithPage);
+        return { records: res, page: null };
+      }
     },
     // 翻页查询
     handlePageCurrentChange(currentPage) {
@@ -147,6 +126,27 @@ export default {
       this.page.pageSize = pageSize;
       this.page.currentPage = 1;
       this.getData();
+    },
+    // 格式化行
+    handleFormatter(item) {
+      const isDictFormat = item.catCode !== undefined && item.catCode !== null && item.catCode !== '';
+      if (isDictFormat) {
+        return this.dictFormatter;
+      }
+      if (typeof item.formatter !== 'function') {
+        return null;
+      }
+      return item.formatter;
+    },
+    async dictFormatter(row, column, cellValue) {
+      const api = this.$gcEl.apiQueryDictList;
+      if (typeof api !== 'function') {
+        console.warn('请先配置数据字典查询函数');
+        return cellValue;
+      }
+      const data = await api(row.catCode);
+      const one = data.filter((x) => x.catCode === row.catCode).find((x) => x.dictCode === cellValue);
+      return typeof one === 'object' && one !== null ? one.dictName : cellValue;
     },
   },
 };
