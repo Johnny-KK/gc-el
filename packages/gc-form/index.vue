@@ -39,8 +39,15 @@
     <template v-else>
       <el-row v-for="(row, rowIndex) in fieldListConfig" :key="rowIndex">
         <!-- <el-divider content-position="left">分组</el-divider> -->
+        <!-- TODO config.labelWidth从mainConfig.labelWidth读取 -->
         <el-col v-for="config in row" :key="config.name" :span="config.span">
-          <el-form-item :label="config.label" :prop="config.name" v-show="config.show" @click.native="$emit('click-form-item', config)">
+          <el-form-item
+            :label="config.label"
+            :prop="config.name"
+            v-show="config.show"
+            :label-width="`${config.labelWidth || mainConfig.labelWidth}px`"
+            @click.native="$emit('click-form-item', config)"
+          >
             <component :is="`gc-${config.type}`" v-model="model[config.name]" v-bind="config" @changeDept="changeDept" />
           </el-form-item>
         </el-col>

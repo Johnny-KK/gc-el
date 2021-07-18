@@ -56,7 +56,7 @@ export default {
           { type: 'select-tree', name: 'tree', label: '树' },
           { type: 'select-user', name: 'user', label: '用户' },
           { type: 'switch', name: 'sss', label: '转换' },
-          { type: 'textarea', name: 'remark', label: '备注', placeholder: '备注', maxlength: 256, span: 24 },
+          { type: 'textarea', name: 'remark', label: '备注备注备注备注备注备注', placeholder: '备注', maxlength: 256, span: 24, labelWidth: 300 },
         ],
       },
     };

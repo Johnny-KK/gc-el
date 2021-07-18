@@ -75,7 +75,6 @@ export default {
         border: true,
         fieldList: [
           { type: 'input', prop: 'name', label: '安全措施' },
-          // { type: 'input', prop: 'content', label: '执行情况' },
           { type: 'input', prop: 'content1', label: '已执行' },
           { type: 'input', prop: 'content2', label: '已恢复' },
           {
