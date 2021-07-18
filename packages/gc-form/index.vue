@@ -63,6 +63,7 @@
 
 <script>
 /**
+ * TODO labelWidth 允许单个指定
  * TODO 集成 v-permission 指令 快捷根据权限显示隐藏
  * TODO 添加 clear 属性 允许值清空
  * TODO 尝试提供form-item插槽

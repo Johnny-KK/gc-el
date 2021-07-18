@@ -1,13 +1,39 @@
 <template>
   <div class="gc-table" v-loading="loading">
-    <el-table :data="tableData" stripe height="100%">
+    <el-table
+      :data="tableData"
+      stripe
+      height="100%"
+      :border="isBorder"
+      :span-method="typeof tableConfig.spanMethod === 'function' ? tableConfig.spanMethod : null"
+    >
+      <!-- 分组行号 -->
+      <el-table-column v-if="isGroup" label="序号" width="50">
+        <template #default="{ row }">
+          {{ row.__group__.index }}
+        </template>
+      </el-table-column>
       <template v-for="(item, i) in fieldList">
+        <!-- 行号 -->
         <el-table-column v-if="item.type === COLUMN_TYPE.INDEX" :key="i" type="index" :label="item.label" width="50"></el-table-column>
+        <!-- 操作列 -->
         <el-table-column v-else-if="item.type === COLUMN_TYPE.LINK" :key="i" :label="item.label">
           <template #default="{ row, $index }">
-            <el-link @click.native.stop="link.click(row, $index)" v-for="link in item.link" :key="link.name" type="primary" fixed="right">{{
-              link.name
-            }}</el-link>
+            <el-link
+              v-for="link in item.link"
+              :key="link.name"
+              type="primary"
+              fixed="right"
+              v-show="typeof link.show === 'function' ? link.show(row, $index) : true"
+              @click.native.stop="link.click(row, $index)"
+              >{{ link.name }}</el-link
+            >
+          </template>
+        </el-table-column>
+        <!-- 可编辑输入框 -->
+        <el-table-column v-else-if="item.type === COLUMN_TYPE.INPUT" :key="i" :label="item.label">
+          <template #default="{ row }">
+            <gc-input v-model="row[item.prop]"></gc-input>
           </template>
         </el-table-column>
         <el-table-column v-else :key="i" :prop="item.prop" :label="item.label" :formatter="handleFormatter(item)"></el-table-column>
@@ -43,7 +69,14 @@ export default {
   data() {
     return {
       loading: false,
-      COLUMN_TYPE: Object.freeze({ TEXT: 'text', INDEX: 'index', LINK: 'link' }), // 表格列类型
+      /**
+       * 表格列类型
+       * text 默认类型 直接显示文本
+       * index 行号索引 显示当前行号 无需指定内容
+       * link 操作列 提供操作文字链接
+       * input 可编辑列 编辑形式为普通input输入框
+       */
+      COLUMN_TYPE: Object.freeze({ TEXT: 'text', INDEX: 'index', LINK: 'link', INPUT: 'input' }),
       tableData: [], // 表格数据
       page: {
         currentPage: 1, // 当前页码
@@ -56,7 +89,15 @@ export default {
     };
   },
   computed: {
-    //  是否分页
+    // 是否有边框
+    isBorder() {
+      return this.tableConfig.border === true ? true : false;
+    },
+    // 是否分组
+    isGroup() {
+      return this.tableConfig.group === true ? true : false;
+    },
+    // 是否分页
     isPage() {
       return this.tableConfig.isPage === false ? false : true;
     },
@@ -79,6 +120,14 @@ export default {
       return Object.assign({}, this.tableConfig.apiParams, { currentPage: this.page.currentPage, pageSize: this.page.pageSize });
     },
   },
+  watch: {
+    tableConfig: {
+      deep: true,
+      handler() {
+        this.getData();
+      },
+    },
+  },
   created() {
     this.getData();
   },
@@ -98,23 +147,44 @@ export default {
     },
     // 从远程/本地数据源加载数据以及分页信息
     async loadDataAndPageFromSource() {
+      let { records, page } = { records: null, page: null };
+      // 本地分页
       if (this.isLocalData && this.isPage) {
-        return {
-          records: this.tableConfig.localData.slice((this.page.currentPage - 1) * this.page.pageSize, this.page.currentPage * this.page.pageSize),
-          page: { currentPage: this.page.currentPage, total: this.tableConfig.localData.length },
-        };
+        records = this.tableConfig.localData.slice((this.page.currentPage - 1) * this.page.pageSize, this.page.currentPage * this.page.pageSize);
+        page = { currentPage: this.page.currentPage, total: this.tableConfig.localData.length };
       }
+      // 本地不分页
       if (this.isLocalData && !this.isPage) {
-        return { records: this.tableConfig.localData, page: null };
+        records = this.tableConfig.localData;
+        page = null;
       }
+      // 远程加载分页
       if (!this.isLocalData && this.isPage) {
         const res = await this.tableConfig.api(this.apiParamsWithPage);
-        return { records: res.records, page: { currentPage: res.current, total: res.total } };
+        records = res.records;
+        page = { currentPage: res.current, total: res.total };
       }
+      // 远程加载不分页
       if (!this.isLocalData && !this.isPage) {
         const res = await this.tableConfig.api(this.apiParamsWithPage);
-        return { records: res, page: null };
+        records = res;
+        page = null;
       }
+
+      // 如果表格需要分组显示则进行分组索引生成 分组逻辑 根据__group__属性中 group为组名 title为组标题
+      if (this.isGroup) {
+        records.forEach((x) => {
+          if (x.__group__ === null || typeof x.__group__ !== 'object') {
+            x.__group__ = { group: -1 };
+          } else {
+            if (x.__group__.group === null || x.__group__.group === undefined) {
+              x.__group__.group = -1;
+            }
+          }
+        });
+        records = handleRecords(records);
+      }
+      return { records, page };
     },
     // 翻页查询
     handlePageCurrentChange(currentPage) {
@@ -138,6 +208,7 @@ export default {
       }
       return item.formatter;
     },
+    // 数据字段显示格式化
     async dictFormatter(row, column, cellValue) {
       const api = this.$gcEl.apiQueryDictList;
       if (typeof api !== 'function') {
@@ -150,6 +221,38 @@ export default {
     },
   },
 };
+
+/**
+ * 根据某个属性将对象数组分组
+ */
+function handleRecords(list) {
+  // TODO 这里仅仅考虑了9组
+  const ia = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  let result = {};
+  list.forEach((x) => {
+    if (!Array.isArray(result[x.__group__.group])) {
+      result[x.__group__.group] = [x];
+    } else {
+      result[x.__group__.group].push(x);
+    }
+  });
+  result = Object.keys(result).map((key) => result[key]);
+  result.forEach((x, i) =>
+    x.forEach((y, j) => {
+      if (y.__group__.title === true) {
+        y.__group__.index = `${ia[i + 1]}、`;
+      } else {
+        // TODO 这里默认有且仅有一个title j+1-1相互抵消
+        y.__group__.index = j + 1 - 1;
+      }
+    })
+  );
+  return result.flat().sort((a, b) => {
+    const o = a.__group__.group - b.__group__.group;
+    const i = a.__group__.inde - b.__group__.index;
+    return o !== 0 ? o : i;
+  });
+}
 </script>
 
 <style lang="scss" scoped>
