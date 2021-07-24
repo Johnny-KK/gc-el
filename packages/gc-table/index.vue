@@ -2,7 +2,7 @@
   <div class="gc-table" v-loading="loading">
     <el-table
       :data="tableData"
-      stripe
+      :stripe="isStripe"
       height="100%"
       :border="isBorder"
       :span-method="typeof tableConfig.spanMethod === 'function' ? tableConfig.spanMethod : null"
@@ -17,7 +17,7 @@
         <!-- 行号 -->
         <el-table-column v-if="item.type === COLUMN_TYPE.INDEX" :key="i" type="index" :label="item.label" width="50"></el-table-column>
         <!-- 操作列 -->
-        <el-table-column v-else-if="item.type === COLUMN_TYPE.LINK" :key="i" :label="item.label">
+        <el-table-column v-else-if="item.type === COLUMN_TYPE.LINK" :key="i" :label="item.label" :width="item.width">
           <template #default="{ row, $index }">
             <el-link
               v-for="link in item.link"
@@ -31,12 +31,12 @@
           </template>
         </el-table-column>
         <!-- 可编辑输入框 -->
-        <el-table-column v-else-if="item.type === COLUMN_TYPE.INPUT" :key="i" :label="item.label">
+        <el-table-column v-else-if="item.type === COLUMN_TYPE.INPUT" :key="i" :label="item.label" :width="item.width">
           <template #default="{ row }">
             <gc-input v-model="row[item.prop]"></gc-input>
           </template>
         </el-table-column>
-        <el-table-column v-else :key="i" :prop="item.prop" :label="item.label" :formatter="handleFormatter(item)"></el-table-column>
+        <el-table-column v-else :key="i" :prop="item.prop" :label="item.label" :formatter="handleFormatter(item)" :width="item.width"></el-table-column>
       </template>
     </el-table>
 
@@ -89,6 +89,10 @@ export default {
     };
   },
   computed: {
+    // 是否斑马线
+    isStripe() {
+      return this.tableConfig.stripe === false ? false : true;
+    },
     // 是否有边框
     isBorder() {
       return this.tableConfig.border === true ? true : false;

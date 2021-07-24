@@ -68,6 +68,7 @@ export default {
       tableConfig: {
         localData: localData,
         isPage: false,
+        stripe: false,
         // api: apiQueryUser,
         spanMethod: spanMethod,
         group: true,
@@ -80,6 +81,7 @@ export default {
           {
             label: '操作',
             type: 'link',
+            width: 150,
             link: [
               { name: '新增', click: (row, i) => this.handleAdd(row, i), show: (row, i) => this.showAdd(row, i) },
               { name: '删除', click: (row, i) => this.handleDelete(row, i), show: (row, i) => this.showDelete(row, i) },
