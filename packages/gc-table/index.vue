@@ -1,7 +1,7 @@
 <template>
   <div class="gc-table" v-loading="loading">
     <el-table
-      :data="tableData"
+      :data="actTableData"
       :stripe="isStripe"
       height="100%"
       :border="isBorder"
@@ -65,6 +65,7 @@ export default {
   name: 'gc-table',
   props: {
     tableConfig: { required: true }, // 表格配置项
+    data: { required: true }, // 表格数据
   },
   data() {
     return {
@@ -77,7 +78,7 @@ export default {
        * input 可编辑列 编辑形式为普通input输入框
        */
       COLUMN_TYPE: Object.freeze({ TEXT: 'text', INDEX: 'index', LINK: 'link', INPUT: 'input' }),
-      tableData: [], // 表格数据
+      actTableData: [], // 表格数据 考虑到本地分页的情况下table显示的数据和提供的数据将不一致
       page: {
         currentPage: 1, // 当前页码
         total: 0, // 总数
@@ -107,7 +108,7 @@ export default {
     },
     // 是否本地数据
     isLocalData() {
-      return Array.isArray(this.tableConfig.localData);
+      return this.tableConfig.isLocalData === true ? true : false;
     },
     // 表格字段
     fieldList() {
@@ -125,12 +126,18 @@ export default {
     },
   },
   watch: {
-    tableConfig: {
+    data: {
       deep: true,
       handler() {
         this.getData();
       },
     },
+    // tableConfig: {
+    //   deep: true,
+    //   handler() {
+    //     this.getData();
+    //   },
+    // },
   },
   created() {
     this.getData();
@@ -141,7 +148,7 @@ export default {
       this.loading = true;
       try {
         const { records, page } = await this.loadDataAndPageFromSource();
-        this.tableData = records;
+        this.actTableData = records;
         page !== null && Object.assign(this.page, page);
       } catch (err) {
         console.error(err);
@@ -154,12 +161,12 @@ export default {
       let { records, page } = { records: null, page: null };
       // 本地分页
       if (this.isLocalData && this.isPage) {
-        records = this.tableConfig.localData.slice((this.page.currentPage - 1) * this.page.pageSize, this.page.currentPage * this.page.pageSize);
+        records = this.data.slice((this.page.currentPage - 1) * this.page.pageSize, this.page.currentPage * this.page.pageSize);
         page = { currentPage: this.page.currentPage, total: this.tableConfig.localData.length };
       }
       // 本地不分页
       if (this.isLocalData && !this.isPage) {
-        records = this.tableConfig.localData;
+        records = this.data;
         page = null;
       }
       // 远程加载分页
