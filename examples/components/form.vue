@@ -23,6 +23,7 @@ export default {
           { type: 'date-picker', name: 'startTime', label: '开始时间' },
           { type: 'input', name: 'username', label: '姓名' },
           { type: 'pic', name: 'avatar', label: '头像', span: 24 },
+          { type: 'pic', name: 'file00', label: '交底文件' },
           {
             type: 'radio',
             name: 'sex',

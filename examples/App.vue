@@ -23,7 +23,7 @@ export default {
   components: { 'x-table': XTable, 'x-form': XForm },
   data() {
     return {
-      active: 'table',
+      active: 'form',
     };
   },
   methods: {

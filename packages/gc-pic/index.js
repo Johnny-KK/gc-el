@@ -39,16 +39,24 @@ export default {
   data() {
     return {
       imgPath: null,
+      imgPathList: [],
     };
   },
   async created() {
     const apiDownloadFile = this.$gcEl.apiDownloadFile;
-    if (this.value !== '' && this.value !== null && this.value !== undefined) {
-      this.imgPath = `data:image/png;base64,${await apiDownloadFile(this.value)}`;
+    if (Array.isArray(this.value)) {
+      for (const x of this.value) {
+        this.imgPathList.push(`data:image/png;base64,${await apiDownloadFile(x)}`);
+      }
     }
   },
   beforeDestroy() {
-    this.imgPath !== null && URL.revokeObjectURL(this.imgPath); // 释放内存
+    // 释放内存
+    if (Array.isArray(this.imgPathList) && this.imgPathList.length > 0) {
+      this.imgPathList.forEach((x) => {
+        URL.revokeObjectURL(x);
+      });
+    }
   },
   methods: {
     handleClick() {
@@ -59,16 +67,26 @@ export default {
     },
     handleFileChange(e) {
       const files = e.target.files;
-      const fileSize = files[0].size;
-      if (fileSize > 6164000) {
-        console.warn('选择的图片不能超过6MB,请重新选择!');
-        return false;
+      // TODO 文件大小限制
+      // const fileSize = files[0].size;
+      // if (fileSize > 6164000) {
+      //   console.warn('选择的图片不能超过6MB,请重新选择!');
+      //   return false;
+      // }
+      if (files.length > 0) {
+        for (const x of files) {
+          this.imgPathList.push(URL.createObjectURL(x));
+        }
+        this.$emit('input', files);
       }
-      this.imgPath = URL.createObjectURL(files[0]);
-      this.$emit('input', files[0]);
     },
   },
   render(h) {
+    const picBoxStyle = {
+      display: 'flex',
+      'flex-direction': 'row',
+      'flex-wrap': 'warp',
+    };
     const iconStyle = {
       'font-size': '28px',
       color: '#8c939d',
@@ -82,30 +100,38 @@ export default {
     const inputStyle = { display: 'none' };
     const imgStyle = { width: '178px', height: '178px', display: 'block', border: '1px dashed #d9d9d9', cursor: 'pointer' };
 
-    return h('div', {}, [
-      this.imgPath === null || this.imgPath === undefined || this.imgPath === ''
-        ? h('i', {
-            class: 'el-icon-plus',
-            style: { ...iconStyle },
-            on: {
-              click: this.handleClick,
-            },
-          })
-        : h('img', {
-            attrs: { src: this.imgPath },
-            style: { ...imgStyle },
-            on: {
-              click: this.handleClick,
-            },
-          }),
-      h('input', {
-        attrs: { type: 'file' },
-        class: 'file-input',
-        style: { ...inputStyle },
-        on: {
-          change: this.handleFileChange,
-        },
-      }),
-    ]);
+    return h(
+      'div',
+      {
+        style: { ...picBoxStyle },
+      },
+      [
+        Array.isArray(this.imgPathList) && this.imgPathList.length > 0
+          ? this.imgPathList.map((imgItem) =>
+              h('img', {
+                attrs: { src: imgItem },
+                style: { ...imgStyle },
+                on: {
+                  click: this.handleClick,
+                },
+              })
+            )
+          : h('i', {
+              class: 'el-icon-plus',
+              style: { ...iconStyle },
+              on: {
+                click: this.handleClick,
+              },
+            }),
+        h('input', {
+          attrs: { type: 'file', accept: '.jpg, .jpeg, .gif, .png, .bmp, .tiff', multiple: true },
+          class: 'file-input',
+          style: { ...inputStyle },
+          on: {
+            change: this.handleFileChange,
+          },
+        }),
+      ]
+    );
   },
 };
